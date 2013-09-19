@@ -195,7 +195,7 @@ final class DerminalMainWindow : MainWindow {
 		hints.baseWidth = inner_border.left + inner_border.right;
 		hints.baseHeight = inner_border.top + inner_border.bottom;
 		
-		gtk_border_free (inner_border);
+		gtk_border_free(inner_border);
 		
 		hints.widthInc = cw;
 		hints.heightInc = ch;
