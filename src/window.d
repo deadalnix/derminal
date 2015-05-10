@@ -127,7 +127,7 @@ final class DerminalMainWindow : MainWindow {
 		t.grabFocus();
 		
 		t.addOnWindowTitleChanged((t) {
-			auto title = term.getWindowTitle();
+			auto title = t.getWindowTitle();
 			if(title) {
 				l.setTitle(title);
 				if(t is term) {
@@ -138,7 +138,7 @@ final class DerminalMainWindow : MainWindow {
 			tabs.showAll();
 		});
 		
-		t.addOnChildExited((t) {
+		t.addOnChildExited((i, t) {
 			auto n = tabs.pageNum(t);
 			tabs.removePage(n);
 		});
@@ -186,16 +186,7 @@ final class DerminalMainWindow : MainWindow {
 		int cw = cast(int) term.getCharWidth();
 		int ch = cast(int) term.getCharHeight();
 		
-		GtkBorder *inner_border;
-		
-		import gtkc.gtk;
-		gtk_widget_style_get(term.getWidgetStruct(), Str.toStringz("inner-border"), &inner_border, null);
-		
 		GdkGeometry hints;
-		hints.baseWidth = inner_border.left + inner_border.right;
-		hints.baseHeight = inner_border.top + inner_border.bottom;
-		
-		gtk_border_free(inner_border);
 		
 		hints.widthInc = cw;
 		hints.heightInc = ch;
@@ -203,7 +194,7 @@ final class DerminalMainWindow : MainWindow {
 		hints.minWidth = 4 * cw;
 		hints.minHeight = ch;
 		
-		setGeometryHints(term, hints, GdkWindowHints.HINT_RESIZE_INC | GdkWindowHints.HINT_MIN_SIZE | GdkWindowHints.HINT_BASE_SIZE);
+		setGeometryHints(term, &hints, GdkWindowHints.RESIZE_INC | GdkWindowHints.MIN_SIZE | GdkWindowHints.BASE_SIZE);
 	}
 }
 
@@ -250,6 +241,7 @@ final class TabLabel : HBox {
 			// t.destroy();
 			tabs.removePage(n);
 		}, true);
+		
 		b.setRelief(ReliefStyle.NONE);
 		b.setFocusOnClick(false);
 		

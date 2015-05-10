@@ -19,7 +19,7 @@ final class Derminal : Terminal {
 			idle = null;
 			
 			// Start terminal.
-			forkCommandFull(VtePtyFlags.DEFAULT, folder, [Terminal.getUserShell()], [], cast(GSpawnFlags) 0, null, null, pid);
+			spawnSync(VtePtyFlags.DEFAULT, folder, [Terminal.getUserShell()], [], cast(GSpawnFlags) 0, null, null, pid, null);
 			
 			return false;
 		});
